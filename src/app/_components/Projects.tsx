@@ -7,6 +7,22 @@ import Link from "next/link";
 const projects = [
   {
     id: 1,
+    title: "Healthcare for Older Adults",
+    category: "UX/UI Design & Accessibility",
+    description:
+      "Designed a WCAG AAA-compliant telehealth platform optimized for users aged 65 and older.",
+    color: "from-emerald-500 to-teal-500",
+  },
+  {
+    id: 2,
+    title: "Ruta SV: Digital Wayfinding",
+    category: "UX Research & Mobile Design",
+    description:
+      "Designed El Salvador's first comprehensive digital wayfinding system for public transportation.",
+    color: "from-blue-500 to-cyan-500",
+  },
+  {
+    id: 3,
     title: "Mobile Banking Redesign",
     category: "UX Research & Design",
     description:
@@ -14,20 +30,12 @@ const projects = [
     color: "from-blue-500 to-cyan-500",
   },
   {
-    id: 2,
+    id: 4,
     title: "Investment Dashboard",
     category: "UI Design & Data Visualization",
     description:
       "Created an intuitive investment dashboard that helps users make informed decisions with real-time data.",
     color: "from-purple-500 to-pink-500",
-  },
-  {
-    id: 3,
-    title: "Onboarding Flow Optimization",
-    category: "UX Research",
-    description:
-      "Conducted user research and redesigned onboarding flow, increasing completion rates by 65%.",
-    color: "from-amber-500 to-orange-500",
   },
 ];
 
