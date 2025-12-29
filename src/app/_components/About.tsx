@@ -1,49 +1,52 @@
-import { motion } from 'framer-motion';
-import { Award, Users, Lightbulb, Target } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Award, Users, Lightbulb, Target } from "lucide-react";
 
 const stats = [
-  { icon: Award, value: '5+', label: 'Years Experience' },
-  { icon: Users, value: '50+', label: 'Projects Delivered' },
-  { icon: Lightbulb, value: '100+', label: 'Research Sessions' },
-  { icon: Target, value: '40%', label: 'Avg. UX Improvement' },
+  { icon: Award, value: "5+", label: "Years Experience" },
+  { icon: Users, value: "50+", label: "Projects Delivered" },
+  { icon: Lightbulb, value: "100+", label: "Research Sessions" },
+  { icon: Target, value: "40%", label: "Avg. UX Improvement" },
 ];
 
 const skills = [
-  'User Research',
-  'UX/UI Design',
-  'Prototyping',
-  'Design Systems',
-  'Usability Testing',
-  'Information Architecture',
-  'Interaction Design',
-  'Visual Design',
+  "User Research",
+  "UX/UI Design",
+  "Prototyping",
+  "Design Systems",
+  "Usability Testing",
+  "Information Architecture",
+  "Interaction Design",
+  "Visual Design",
 ];
 
 export function About() {
   return (
-    <section className="py-8 px-6 bg-neutral-900 text-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+    <section className="bg-neutral-900 px-6 py-8 text-white">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-20 grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-white mb-6">About Me</h2>
+            <h2 className="mb-6 text-white">About Me</h2>
             <div className="space-y-4 text-neutral-300">
               <p>
-                I&#39;m a UX/UI designer specializing in financial services, with a passion for making complex 
-                banking systems accessible and delightful for everyday users.
+                I&#39;m a UX/UI designer specializing in financial services,
+                with a passion for making complex banking systems accessible and
+                delightful for everyday users.
               </p>
               <p>
-                My approach combines rigorous user research with intentional design decisions. I believe 
-                that great design isn&#39;t just about aesthetics—it&#39;s about understanding user needs and 
+                My approach combines rigorous user research with intentional
+                design decisions. I believe that great design isn&#39;t just
+                about aesthetics—it&#39;s about understanding user needs and
                 creating solutions that truly work.
               </p>
               <p>
-                Based in Mexico, I&#39;ve worked with fintech startups and established banks to transform 
-                digital experiences that millions of users interact with daily.
+                Based in Mexico, I&#39;ve worked with fintech startups and
+                established banks to transform digital experiences that millions
+                of users interact with daily.
               </p>
             </div>
           </motion.div>
@@ -64,10 +67,10 @@ export function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10"
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm"
                 >
-                  <Icon className="w-8 h-8 mb-4 text-blue-400" />
-                  <div className="text-white mb-1">{stat.value}</div>
+                  <Icon className="mb-4 h-8 w-8 text-blue-400" />
+                  <div className="mb-1 text-white">{stat.value}</div>
                   <div className="text-sm text-neutral-400">{stat.label}</div>
                 </motion.div>
               );
@@ -81,7 +84,7 @@ export function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-white mb-8">Skills & Expertise</h3>
+          <h3 className="mb-8 text-white">Skills & Expertise</h3>
           <div className="flex flex-wrap gap-3">
             {skills.map((skill, index) => (
               <motion.span
@@ -91,7 +94,7 @@ export function About() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 whileHover={{ scale: 1.05 }}
-                className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 text-neutral-200 cursor-default"
+                className="cursor-default rounded-full border border-white/20 bg-white/10 px-6 py-3 text-neutral-200 backdrop-blur-sm"
               >
                 {skill}
               </motion.span>

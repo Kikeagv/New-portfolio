@@ -11,18 +11,18 @@ export function AffinityMapping() {
         "Can't find routes to new places",
         "Relies on asking strangers",
         "Route information is inconsistent",
-        "Fear of getting lost"
-      ]
+        "Fear of getting lost",
+      ],
     },
     {
       title: "Payment Issues",
-      color: "bg-blue-100 border-blue-300", 
+      color: "bg-blue-100 border-blue-300",
       items: [
         "Need exact change ($0.25)",
         "Can't calculate multi-trip costs",
         "No digital payment options",
-        "Worried about running out of cash"
-      ]
+        "Worried about running out of cash",
+      ],
     },
     {
       title: "Time & Anxiety",
@@ -31,8 +31,8 @@ export function AffinityMapping() {
         "No real-time arrival info",
         "Arrive early to be safe",
         "Long waits with no updates",
-        "Stress about transfer timing"
-      ]
+        "Stress about transfer timing",
+      ],
     },
     {
       title: "Safety Concerns",
@@ -41,8 +41,8 @@ export function AffinityMapping() {
         "Waiting alone at night",
         "Unfamiliar bus stops",
         "Concerns about crowded buses",
-        "Navigation in dangerous areas"
-      ]
+        "Navigation in dangerous areas",
+      ],
     },
     {
       title: "Digital Constraints",
@@ -51,8 +51,8 @@ export function AffinityMapping() {
         "Limited data plans",
         "Poor connectivity in some areas",
         "Battery drain concerns",
-        "Previous apps were unreliable"
-      ]
+        "Previous apps were unreliable",
+      ],
     },
     {
       title: "User Behaviors",
@@ -61,9 +61,9 @@ export function AffinityMapping() {
         "Take photos of route info",
         "Save important locations",
         "Travel in groups when possible",
-        "Use landmarks for navigation"
-      ]
-    }
+        "Use landmarks for navigation",
+      ],
+    },
   ];
 
   return (
@@ -72,16 +72,20 @@ export function AffinityMapping() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="bg-neutral-50 rounded-2xl p-8"
+        className="rounded-2xl bg-neutral-50 p-8"
       >
-        <h3 className="text-2xl text-neutral-900 mb-6" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
+        <h3
+          className="mb-6 text-2xl text-neutral-900"
+          style={{ fontFamily: "Georgia, serif", fontStyle: "italic" }}
+        >
           Affinity Mapping: User Insights
         </h3>
-        <p className="text-neutral-600 mb-8">
-          Key themes emerged from 42 interviews, revealing interconnected challenges across the user journey
+        <p className="mb-8 text-neutral-600">
+          Key themes emerged from 42 interviews, revealing interconnected
+          challenges across the user journey
         </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category, index) => (
             <motion.div
               key={category.title}
@@ -89,13 +93,18 @@ export function AffinityMapping() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className={`${category.color} border-2 rounded-xl p-4`}
+              className={`${category.color} rounded-xl border-2 p-4`}
             >
-              <h4 className=" font-semibold text-neutral-900 mb-3">{category.title}</h4>
+              <h4 className="mb-3 font-semibold text-neutral-900">
+                {category.title}
+              </h4>
               <ul className="space-y-2">
                 {category.items.map((item, itemIndex) => (
-                  <li key={itemIndex} className="text-sm text-neutral-700 flex items-start gap-2">
-                    <span className="text-neutral-500 mt-1">•</span>
+                  <li
+                    key={itemIndex}
+                    className="flex items-start gap-2 text-sm text-neutral-700"
+                  >
+                    <span className="mt-1 text-neutral-500">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -103,11 +112,13 @@ export function AffinityMapping() {
             </motion.div>
           ))}
         </div>
-        
-        <div className="mt-8 p-4 bg-white rounded-xl border border-neutral-200">
+
+        <div className="mt-8 rounded-xl border border-neutral-200 bg-white p-4">
           <p className="text-sm text-neutral-600">
-            <strong>Key Insight:</strong> Users trade time for certainty—arriving early and asking multiple people 
-            to compensate for lack of reliable information. This creates significant daily friction and anxiety.
+            <strong>Key Insight:</strong> Users trade time for
+            certainty—arriving early and asking multiple people to compensate
+            for lack of reliable information. This creates significant daily
+            friction and anxiety.
           </p>
         </div>
       </motion.div>

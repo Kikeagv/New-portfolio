@@ -1,493 +1,792 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { AffinityMapping } from "~/app/_components/research/AffinityMapping";
-
-const sections = [
-  { id: 'overview', label: 'Project Overview' },
-  { id: 'challenge', label: 'The Challenge' },
-  { id: 'research', label: 'Research & Discovery' },
-  { id: 'affinity', label: 'Affinity Mapping' },
-  { id: 'strategy', label: 'Design Strategy' },
-  { id: 'solution', label: 'The Solution' },
-  { id: 'testing', label: 'Testing & Iteration' },
-];
+import { useRef } from "react";
 
 export default function RutaSVCaseStudyPage() {
-  const [activeSection, setActiveSection] = useState('overview');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: 0,
-    };
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    sections.forEach((section) => {
-      const element = document.getElementById(section.id);
-      if (element) {
-        observer.observe(element);
-      }
-    });
-
-    return () => {
-      sections.forEach((section) => {
-        const element = document.getElementById(section.id);
-        if (element) {
-          observer.unobserve(element);
-        }
-      });
-    };
-  }, []);
+  const heroOpacity = useTransform(heroProgress, [0, 0.5], [1, 0]);
+  const heroScale = useTransform(heroProgress, [0, 0.5], [1, 0.95]);
 
   return (
-    <div className="min-h-screen bg-neutral-900">
-      {/* Header */}
-      <header className="bg-neutral-900 border-b border-neutral-800 sticky top-0 z-50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+    <div ref={containerRef} className="bg-[#0a0a0a]">
+      {/* Navigation */}
+      <nav className="fixed top-0 right-0 left-0 z-50 mix-blend-difference">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
           <Link href="/projects">
-            <motion.button
+            <motion.span
+              className="flex items-center gap-2 text-sm text-white"
               whileHover={{ x: -4 }}
-              className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back to Projects</span>
-            </motion.button>
+              <ArrowLeft className="h-4 w-4" />
+              Work
+            </motion.span>
           </Link>
+          <span className="text-sm text-white">Ruta SV</span>
         </div>
-      </header>
+      </nav>
 
-      {/* Hero Section */}
-      <section className="px-6 pt-20 pb-12 bg-neutral-900">
-        <div className="max-w-6xl mx-auto">
+      {/* Hero - Full viewport, cinematic */}
+      <motion.section
+        ref={heroRef}
+        style={{ opacity: heroOpacity, scale: heroScale }}
+        className="relative flex h-screen items-center justify-center overflow-hidden"
+      >
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-[#0a0a0a] to-cyan-950" />
+
+        {/* Subtle grid pattern */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        <div className="relative z-10 mx-auto max-w-6xl px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-neutral-400 mb-4"
+            transition={{ delay: 0.2 }}
+            className="mb-6 text-sm tracking-[0.3em] text-blue-400 uppercase"
           >
-            Public Transit UX/UI Case Study
+            Case Study
           </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-white text-5xl lg:text-6xl mb-12"
-            style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', lineHeight: '1.2' }}
-          >
-            Ruta SV: Bringing Digital Wayfinding to El Salvador&rsquo;s Bus System
-          </motion.h1>
 
-          {/* Hero Image Placeholder */}
-          <motion.div
+          <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="rounded-3xl overflow-hidden bg-linear-to-br from-blue-600 to-cyan-500 p-12"
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="mb-8 text-5xl leading-[1.1] font-light text-white md:text-7xl lg:text-8xl"
           >
-            {/* PLACEHOLDER: Replace with hero mockup showing app on phone with San Salvador bus in background */}
-            <div className="w-full h-100 bg-neutral-800/30 rounded-2xl flex items-center justify-center border-2 border-dashed border-white/20">
-              <p className="text-white/60 text-lg">Hero Image: App mockup with San Salvador transit backdrop</p>
-            </div>
-          </motion.div>
+            What if a city&rsquo;s entire
+            <br />
+            <span className="text-blue-400 italic">transit knowledge</span>
+            <br />
+            lived in people&rsquo;s heads?
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mx-auto max-w-xl text-lg text-neutral-400"
+          >
+            I designed El Salvador&rsquo;s first public transit app—for users
+            who&rsquo;d never used one.
+          </motion.p>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+            className="h-12 w-[1px] bg-gradient-to-b from-white/50 to-transparent"
+          />
+        </motion.div>
+      </motion.section>
+
+      {/* The Hook - Big statement */}
+      <section className="relative bg-white py-32 md:py-40">
+        <div className="mx-auto max-w-4xl px-6">
+          <motion.p
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl leading-relaxed font-light text-neutral-900 md:text-4xl lg:text-5xl"
+          >
+            In San Salvador, there are no route maps. No schedules. No apps.
+            <span className="text-neutral-400">
+              {" "}
+              If you want to know which bus goes where, you ask a stranger and
+              hope they&rsquo;re right.
+            </span>
+          </motion.p>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Sidebar */}
-            <div className="lg:col-span-3">
-              <div className="lg:sticky lg:top-32 space-y-12">
-                {/* Timeline */}
-                <div>
-                  <h3 className="text-sm text-neutral-400 mb-3">Timeline</h3>
-                  <p className="text-neutral-900">16 weeks</p>
-                </div>
+      {/* Context - Visual impact */}
+      <section className="bg-neutral-950 py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0 }}
+              className="flex aspect-square flex-col justify-end rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 p-8"
+            >
+              <p className="text-6xl font-light text-white md:text-7xl">0</p>
+              <p className="mt-2 text-blue-200">transit apps existed</p>
+            </motion.div>
 
-                {/* Key Areas */}
-                <div>
-                  <h3 className="text-sm text-neutral-400 mb-3">Key areas</h3>
-                  <p className="text-neutral-900 text-sm leading-relaxed">
-                    UX Research, Mobile Design, Information Architecture, Usability Testing, Design Systems
-                  </p>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="flex aspect-square flex-col justify-end rounded-2xl bg-gradient-to-br from-cyan-600 to-cyan-800 p-8"
+            >
+              <p className="text-6xl font-light text-white md:text-7xl">
+                $0.25
+              </p>
+              <p className="mt-2 text-cyan-200">exact fare, no change given</p>
+            </motion.div>
 
-                {/* People Involved */}
-                <div>
-                  <h3 className="text-sm text-neutral-400 mb-3">Team</h3>
-                  <p className="text-neutral-900 text-sm">
-                    3 UX Designers, 1 Researcher, 2 Developers, Transit Experts
-                  </p>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="flex aspect-square flex-col justify-end rounded-2xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-8"
+            >
+              <p className="text-6xl font-light text-white md:text-7xl">∞</p>
+              <p className="mt-2 text-neutral-400">
+                routes learned by word of mouth
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-                {/* Tools */}
-                <div>
-                  <h3 className="text-sm text-neutral-400 mb-3">Tools</h3>
-                  <p className="text-neutral-900 text-sm">
-                    Figma, Maze, Dovetail, Google Maps API
-                  </p>
-                </div>
-
-                {/* Navigation */}
-                <nav className="hidden lg:block pt-8 border-t border-neutral-200">
-                  <div className="space-y-2">
-                    {sections.map((section) => (
-                      <a
-                        key={section.id}
-                        href={`#${section.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setActiveSection(section.id);
-                          document.getElementById(section.id)?.scrollIntoView({
-                            behavior: 'smooth',
-                          });
-                        }}
-                        className={`block text-sm py-2 border-l-2 pl-4 transition-colors ${
-                          activeSection === section.id
-                            ? 'border-blue-500 text-neutral-900'
-                            : 'border-transparent text-neutral-400 hover:text-neutral-900'
-                        }`}
-                      >
-                        {section.label}
-                      </a>
-                    ))}
-                  </div>
-                </nav>
-
-                {/* Next Case Study */}
-                <div className="pt-8 border-t border-neutral-200">
-                  <p className="text-sm text-neutral-400 mb-2">Next Case Study</p>
-                  <Link
-                    href="/projects"
-                    className="text-neutral-900 hover:text-neutral-600 transition-colors"
-                  >
-                    View All Projects →
-                  </Link>
-                </div>
-              </div>
+      {/* My Role - Clean, confident */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid gap-16 md:grid-cols-2">
+            <div>
+              <p className="mb-4 text-sm tracking-wider text-neutral-400 uppercase">
+                My Role
+              </p>
+              <h2 className="text-3xl font-light text-neutral-900 md:text-4xl">
+                Lead Product Designer
+              </h2>
+              <p className="mt-6 text-lg text-neutral-600">
+                End-to-end ownership from research through shipped product,
+                leading a team of 7 over 16 weeks.
+              </p>
             </div>
 
-            {/* Content */}
-            <div className="lg:col-span-9 space-y-20">
-              {/* Overview */}
-              <div id="overview" className="space-y-8">
-                <p className="text-xl text-neutral-700 leading-relaxed">
-                  Ruta SV reimagines public transportation for El Salvador by creating the country&rsquo;s first
-                  comprehensive digital wayfinding system—a complete mobility platform respecting the realities
-                  of Salvadoran life: limited data plans, cash-based payments, and a transit system built on
-                  community knowledge.
+            <div className="space-y-8">
+              <div className="border-l-2 border-blue-500 pl-6">
+                <p className="font-medium text-neutral-900">Research</p>
+                <p className="mt-1 text-neutral-600">
+                  42 interviews, 8 focus groups, 50+ hours in the field
                 </p>
-
-                <p className="text-neutral-600 leading-relaxed">
-                  As Lead Product Designer, I led research efforts to understand how millions of Salvadorans
-                  navigate a bus system that operates more on trust and oral tradition than official schedules,
-                  then designed solutions that bridge digital convenience with existing user behaviors.
-                </p>
-
-                {/* Metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
-                  <div className="border-l-2 border-neutral-900 pl-6">
-                    <p className="text-4xl text-neutral-900 mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                      42 interviews
-                    </p>
-                    <p className="text-neutral-600">In-depth user research sessions</p>
-                  </div>
-                  <div className="border-l-2 border-neutral-900 pl-6">
-                    <p className="text-4xl text-neutral-900 mb-2" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                      Offline-first
-                    </p>
-                    <p className="text-neutral-600">Core functionality without data</p>
-                  </div>
-                </div>
               </div>
-
-              {/* The Challenge */}
-              <div id="challenge" className="space-y-6">
-                <h2 className="text-3xl text-neutral-900" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                  The Challenge
-                </h2>
-                <p className="text-neutral-600 leading-relaxed">
-                  Unlike major cities with formal metro systems and official route maps, El Salvador&rsquo;s public
-                  transportation operates semi-formally. Routes are identified by numbers and colors, but schedules
-                  are approximate at best. There&rsquo;s no official app, no digital ticketing, and most information
-                  is shared verbally between passengers and drivers.
+              <div className="border-l-2 border-neutral-200 pl-6">
+                <p className="font-medium text-neutral-900">Strategy</p>
+                <p className="mt-1 text-neutral-600">
+                  Defined product vision, principles, and information
+                  architecture
                 </p>
-                <p className="text-neutral-600 leading-relaxed">
-                  The cash-only payment system means exact change is required, with no way to plan costs in advance
-                  for multi-leg journeys. Real-time information doesn&rsquo;t exist, leading to long waits with no idea
-                  when the next bus will arrive. Women especially mentioned safety concerns about waiting alone
-                  at night.
+              </div>
+              <div className="border-l-2 border-neutral-200 pl-6">
+                <p className="font-medium text-neutral-900">Design</p>
+                <p className="mt-1 text-neutral-600">
+                  Complete UI system, interaction design, and prototyping
                 </p>
+              </div>
+              <div className="border-l-2 border-neutral-200 pl-6">
+                <p className="font-medium text-neutral-900">Testing</p>
+                <p className="mt-1 text-neutral-600">
+                  3 rounds of usability testing with 55 participants
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                {/* Quote */}
-                <div className="bg-neutral-50 rounded-2xl p-8 border-l-4 border-blue-500">
-                  <p className="text-neutral-700 text-lg italic leading-relaxed mb-4">
-                    &ldquo;I&rsquo;ve lived in San Salvador for three years and I still don&rsquo;t know all the routes. I have
-                    to ask different people each time I want to go somewhere new, and sometimes the information
-                    is wrong.&rdquo;
+      {/* Research - Immersive story */}
+      <section className="bg-neutral-950 py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <p className="mb-4 text-sm tracking-wider text-neutral-500 uppercase">
+              Research
+            </p>
+            <h2 className="max-w-3xl text-3xl font-light text-white md:text-4xl lg:text-5xl">
+              I spent four weeks doing what most designers skip—
+              <span className="text-neutral-500">
+                actually living the problem.
+              </span>
+            </h2>
+          </motion.div>
+
+          {/* Photo grid */}
+          <div className="mb-16 grid gap-4 md:grid-cols-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="aspect-[4/3] overflow-hidden rounded-xl bg-neutral-800 md:col-span-7"
+            >
+              {/* PLACEHOLDER */}
+              <div className="flex h-full w-full items-center justify-center">
+                <p className="text-neutral-600">
+                  Riding buses across San Salvador
+                </p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="aspect-[4/3] overflow-hidden rounded-xl bg-neutral-800 md:col-span-5"
+            >
+              {/* PLACEHOLDER */}
+              <div className="flex h-full w-full items-center justify-center">
+                <p className="text-neutral-600">
+                  Interviewing commuters at stops
+                </p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="aspect-[4/3] overflow-hidden rounded-xl bg-neutral-800 md:col-span-5"
+            >
+              {/* PLACEHOLDER */}
+              <div className="flex h-full w-full items-center justify-center">
+                <p className="text-neutral-600">Focus group sessions</p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="aspect-[4/3] overflow-hidden rounded-xl bg-neutral-800 md:col-span-7"
+            >
+              {/* PLACEHOLDER */}
+              <div className="flex h-full w-full items-center justify-center">
+                <p className="text-neutral-600">Affinity mapping synthesis</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="max-w-3xl">
+            <p className="text-lg leading-relaxed text-neutral-300">
+              Desk research wouldn&rsquo;t cut it here. To design for this
+              context, I needed to feel the anxiety of not knowing if a bus
+              would come. I needed to experience asking strangers for directions
+              and getting conflicting answers. I needed to understand why people
+              arrive 30 minutes early &ldquo;just in case.&rdquo;
+            </p>
+            <p className="mt-6 text-lg leading-relaxed text-neutral-500">
+              So I rode. I waited. I got lost. I talked to students, domestic
+              workers, vendors, elderly riders. I learned that the problem
+              wasn&rsquo;t missing information—it was constant uncertainty.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Insight - Full impact */}
+      <section className="relative overflow-hidden bg-blue-600 py-32 md:py-40">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0),rgba(0,0,0,0.3))]" />
+        <div className="relative mx-auto max-w-5xl px-6 text-center">
+          <p className="mb-6 text-sm tracking-wider text-blue-200 uppercase">
+            The Core Insight
+          </p>
+          <h2 className="text-3xl leading-tight font-light text-white md:text-5xl lg:text-6xl">
+            &ldquo;Every ride is an act of faith.&rdquo;
+          </h2>
+          <p className="mx-auto mt-8 max-w-2xl text-lg text-blue-100">
+            The research revealed that navigation wasn&rsquo;t the core
+            problem—emotional labor was. Every journey required risk assessment,
+            contingency planning, and managing the anxiety of uncertainty.
+          </p>
+        </div>
+      </section>
+
+      {/* Insights breakdown */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16">
+            <p className="mb-4 text-sm tracking-wider text-neutral-400 uppercase">
+              What I Learned
+            </p>
+            <h2 className="max-w-2xl text-3xl font-light text-neutral-900 md:text-4xl">
+              Four insights that shaped every design decision
+            </h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            {[
+              {
+                number: "01",
+                title: "Data is a luxury",
+                insight:
+                  "Users ration mobile data carefully. Plans are expensive and limited.",
+                decision:
+                  "Built offline-first. Core features work without any connection.",
+              },
+              {
+                number: "02",
+                title: "Cash is survival",
+                insight:
+                  "Not everyone has bank accounts. Digital-only would exclude many.",
+                decision:
+                  "Supported both digital tickets and cash payment workflows.",
+              },
+              {
+                number: "03",
+                title: "Trust is earned",
+                insight:
+                  "Previous apps failed. Users are skeptical of new solutions.",
+                decision:
+                  "Added confidence indicators. Transparent about data quality.",
+              },
+              {
+                number: "04",
+                title: "Anxiety is the enemy",
+                insight:
+                  "People waste hours arriving early because they can't know when buses come.",
+                decision:
+                  "Real-time tracking with honest uncertainty communication.",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={item.number}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="rounded-2xl border border-neutral-200 p-8"
+              >
+                <span className="text-sm text-blue-600">{item.number}</span>
+                <h3 className="mt-4 text-xl font-medium text-neutral-900">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-neutral-600">{item.insight}</p>
+                <p className="mt-4 border-t border-neutral-100 pt-4 text-sm text-neutral-500">
+                  <span className="font-medium text-neutral-700">
+                    Design decision:
+                  </span>{" "}
+                  {item.decision}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quote break */}
+      <section className="bg-neutral-100 py-20 md:py-24">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <blockquote>
+            <p className="text-2xl font-light text-neutral-800 italic md:text-3xl">
+              &ldquo;I&rsquo;ve lived here three years and still don&rsquo;t
+              know all the routes. I ask different people each time, and
+              sometimes the information is wrong.&rdquo;
+            </p>
+            <cite className="mt-6 block text-neutral-500">
+              María, 24 — University Student
+            </cite>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* Design Process */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 max-w-3xl">
+            <p className="mb-4 text-sm tracking-wider text-neutral-400 uppercase">
+              Process
+            </p>
+            <h2 className="text-3xl font-light text-neutral-900 md:text-4xl">
+              From insight to interface
+            </h2>
+            <p className="mt-6 text-lg text-neutral-600">
+              Every design choice traced back to research. No feature existed
+              without a clear user need behind it.
+            </p>
+          </div>
+
+          {/* Design principles as bold visual */}
+          <div className="mb-20 overflow-hidden rounded-2xl bg-neutral-950 p-1">
+            <div className="grid md:grid-cols-4">
+              {[
+                { label: "Offline First", desc: "Download once, use anywhere" },
+                {
+                  label: "Progressive",
+                  desc: "Simple start, depth when ready",
+                },
+                { label: "Transparent", desc: "Honest about limitations" },
+                { label: "Visual", desc: "Icons over text" },
+              ].map((principle, index) => (
+                <div
+                  key={principle.label}
+                  className={`p-8 ${index !== 3 ? "border-b border-neutral-800 md:border-r md:border-b-0" : ""}`}
+                >
+                  <p className="text-lg font-medium text-white">
+                    {principle.label}
                   </p>
-                  <p className="text-neutral-500 text-sm">— María, university student</p>
-                </div>
-
-                <p className="text-neutral-600 leading-relaxed">
-                  The digital divide adds another layer of complexity. While smartphone penetration is relatively
-                  high in urban areas, data plans are expensive and often limited. Any solution needed to work
-                  efficiently with minimal data usage and provide core functionality even when offline.
-                </p>
-              </div>
-
-              {/* Research & Discovery */}
-              <div id="research" className="space-y-6">
-                <h2 className="text-3xl text-neutral-900" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                  Research & Discovery
-                </h2>
-                <p className="text-neutral-600 leading-relaxed">
-                  Understanding the problem required immersing ourselves in the daily reality of bus commuters.
-                  Over four weeks, the research team conducted 42 in-depth interviews, 8 focus groups in different
-                  neighborhoods, and spent countless hours riding buses and observing behavior at major transit hubs.
-                </p>
-
-                {/* Research Image Placeholder - Now replaced with Affinity Mapping */}
-                <div className="my-12">
-                  <AffinityMapping />
-                </div>
-
-                <p className="text-neutral-600 leading-relaxed">
-                  The user base was more diverse than initially assumed. While lower-income workers form the core
-                  ridership, university students, domestic workers, market vendors, and middle-class commuters all
-                  rely on buses daily. This meant designing for vastly different levels of digital literacy.
-                </p>
-              </div>
-
-              {/* Affinity Mapping Section */}
-              <div id="affinity" className="space-y-6">
-                <h2 className="text-3xl text-neutral-900" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                  Affinity Mapping Insights
-                </h2>
-                <p className="text-neutral-600 leading-relaxed">
-                  Through affinity mapping, we identified six key theme areas that encompassed the user experience
-                  challenges. These insights directly informed our design strategy and feature prioritization.
-                </p>
-                <div className="bg-neutral-50 rounded-2xl p-8">
-                  <p className="text-neutral-700 leading-relaxed">
-                    The mapping revealed that users&rsquo; core struggle isn&rsquo;t just finding routes—it&rsquo;s the emotional labor 
-                    of constantly navigating uncertainty. Every ride involves risk assessment, contingency planning, 
-                    and emotional management. This understanding shifted our focus from simply providing information 
-                    to building user confidence and reducing cognitive load.
+                  <p className="mt-2 text-sm text-neutral-500">
+                    {principle.desc}
                   </p>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
 
-              {/* Design Strategy */}
-              <div id="strategy" className="space-y-6">
-                <h2 className="text-3xl text-neutral-900" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                  Design Strategy & Principles
-                </h2>
-                <p className="text-neutral-600 leading-relaxed">
-                  Armed with research insights, we established core design principles that would guide every decision.
-                  These weren&rsquo;t just aspirational statements—they became the filter through which we evaluated every
-                  feature and interaction.
+          {/* Wireframes */}
+          <div className="mb-8">
+            <p className="mb-4 text-sm text-neutral-400">Exploration</p>
+          </div>
+          <div className="aspect-[16/9] overflow-hidden rounded-2xl bg-neutral-100">
+            {/* PLACEHOLDER */}
+            <div className="flex h-full w-full items-center justify-center">
+              <p className="text-neutral-400">Wireframe explorations</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Pivot - Story of iteration */}
+      <section className="bg-neutral-950 py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 max-w-3xl">
+            <p className="mb-4 text-sm tracking-wider text-neutral-500 uppercase">
+              The Pivot
+            </p>
+            <h2 className="text-3xl font-light text-white md:text-4xl">
+              My first design was wrong.
+              <span className="text-neutral-500">
+                {" "}
+                Here&rsquo;s how testing saved it.
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div>
+              <p className="text-lg leading-relaxed text-neutral-300">
+                I initially designed separate tabs for each journey stage:
+                planning, active navigation, and history. It made sense to me.
+              </p>
+              <p className="mt-6 text-lg leading-relaxed text-neutral-300">
+                Testing with 20 users revealed the truth: nobody understood
+                which tab to use when. They&rsquo;d start a search, switch tabs
+                looking for results, get lost. Task completion was 62%.
+              </p>
+              <p className="mt-6 text-lg leading-relaxed text-neutral-500">
+                The fix: one adaptive screen that transforms based on context.
+                Route search when idle. Live navigation during trips. Summary
+                after. Same information, zero confusion.
+              </p>
+              <p className="mt-8 text-sm text-blue-400">
+                Task completion jumped to 95%.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <p className="text-xs tracking-wider text-neutral-600 uppercase">
+                  Before
                 </p>
-
-                {/* Strategy Image Placeholder */}
-                <div className="rounded-2xl overflow-hidden my-8">
-                  {/* PLACEHOLDER: Replace with design principles visualization or wireframes */}
-                  <div className="w-full h-100 bg-neutral-100 flex items-center justify-center border-2 border-dashed border-neutral-300">
-                    <p className="text-neutral-400 text-lg">Image: Design principles & early wireframes</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                  <div className="bg-neutral-50 rounded-2xl p-8">
-                    <h3 className="text-xl text-neutral-900 mb-4">Offline First</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Designed the entire app to work offline by default. Users download maps by region, access
-                      complete schedules, and plan journeys without internet. Only real-time tracking and ticket
-                      purchases require connectivity.
-                    </p>
-                  </div>
-                  <div className="bg-neutral-50 rounded-2xl p-8">
-                    <h3 className="text-xl text-neutral-900 mb-4">Meet Users Where They Are</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Integrates with existing payment habits. Users can buy digital tickets OR use the app to
-                      plan routes and pay cash on board. This hybrid approach respects that not everyone has
-                      a credit card.
-                    </p>
-                  </div>
-                  <div className="bg-neutral-50 rounded-2xl p-8">
-                    <h3 className="text-xl text-neutral-900 mb-4">Progressive Complexity</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Interface reveals complexity gradually. First-time users see simple destination search;
-                      advanced features like saved routes and custom preferences appear as users become comfortable.
-                    </p>
-                  </div>
-                  <div className="bg-neutral-50 rounded-2xl p-8">
-                    <h3 className="text-xl text-neutral-900 mb-4">Visual Over Verbal</h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      Given varying literacy levels, we prioritized visual communication. Icons, colors, and maps
-                      convey information alongside text. Route numbers use the actual colors of the buses.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* The Solution */}
-              <div id="solution" className="space-y-6">
-                <h2 className="text-3xl text-neutral-900" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                  The Solution: Ruta SV
-                </h2>
-                <p className="text-neutral-600 leading-relaxed">
-                  Ruta SV is built around four core user needs: getting from point A to point B, understanding costs,
-                  knowing when buses arrive, and reducing travel anxiety. Each feature addresses one or more of these
-                  needs while respecting the constraints of the local context.
-                </p>
-
-                {/* Solution Screens Placeholder */}
-                <div className="rounded-2xl overflow-hidden my-8">
-                  {/* PLACEHOLDER: Replace with app screens showing key features */}
-                  <div className="w-full h-125 bg-linear-to-br from-blue-50 to-cyan-50 flex items-center justify-center border-2 border-dashed border-blue-200 rounded-2xl">
-                    <p className="text-blue-400 text-lg">Screens: Route planning, cost breakdown, real-time tracking, navigation mode</p>
-                  </div>
-                </div>
-
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-xl text-neutral-900 mb-3">Intelligent Route Planning</h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                      Goes beyond simple directions—users set preferences for fewest transfers, fastest route, or
-                      minimal walking. Results always show at least three options, helping users understand trade-offs
-                      and respecting their agency in decision-making.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl text-neutral-900 mb-3">Transparent Cost Calculation</h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                      Every route displays total cost upfront with segment breakdown. Ticket bundles show clear savings:
-                      &ldquo;You&rsquo;ll save $0.25&rdquo; rather than just listing prices. Payment bridges digital (credit card,
-                      Tigo Money) and physical (cash on board) worlds.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl text-neutral-900 mb-3">Real-Time Tracking (When Available)</h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                      For GPS-equipped routes, users see exactly where their bus is. The app is honest about data
-                      quality—when real-time isn&rsquo;t available, it shows scheduled times with a clear indicator.
-                      Users can set alerts when their bus is approaching.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl text-neutral-900 mb-3">Step-by-Step Navigation</h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                      Large, clear instructions guide users: &ldquo;Walk 5 minutes north,&rdquo; &ldquo;Wait for Route 29,&rdquo; &ldquo;Get off
-                      in 3 stops.&rdquo; During the ride, the app counts down to their destination with vibration alerts
-                      when their stop approaches.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Design Details */}
-                <div className="bg-linear-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 space-y-6 mt-8">
-                  <h3 className="text-2xl text-neutral-900">Design Details That Matter</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <p className="text-lg font-medium text-neutral-900 mb-2">Visual Identity</p>
-                      <p className="text-sm text-neutral-600">
-                        Colors drawn from El Salvador&rsquo;s vibrant &ldquo;chicken buses&rdquo;&mdash;route-specific colors match actual
-                        painted buses, making the app feel distinctly Salvadoran.
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-medium text-neutral-900 mb-2">Readability</p>
-                      <p className="text-sm text-neutral-600">
-                        16pt body text minimum, key info at 24-28pt. High-visibility mode for bright sunlight.
-                        Touch targets never smaller than 48x48 pixels.
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-medium text-neutral-900 mb-2">Localization</p>
-                      <p className="text-sm text-neutral-600">
-                        Written by native speakers using Salvadoran idioms. Local place names (&ldquo;El Centro&rdquo; not
-                        &ldquo;Centro Histórico&rdquo;) make the app feel homegrown.
-                      </p>
-                    </div>
+                <div className="aspect-[9/16] overflow-hidden rounded-xl bg-neutral-900">
+                  {/* PLACEHOLDER */}
+                  <div className="flex h-full w-full items-center justify-center">
+                    <p className="text-sm text-neutral-700">Tab-based UI</p>
                   </div>
                 </div>
               </div>
-
-              {/* Testing & Iteration */}
-              <div id="testing" className="space-y-6">
-                <h2 className="text-3xl text-neutral-900" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                  Testing & Iteration
-                </h2>
-                <p className="text-neutral-600 leading-relaxed">
-                  Testing happened in waves, starting with low-fidelity prototypes and progressing to field testing.
-                  Each round revealed insights that fundamentally changed our approach.
+              <div className="space-y-3">
+                <p className="text-xs tracking-wider text-neutral-600 uppercase">
+                  After
                 </p>
-
-                {/* Testing Image Placeholder */}
-                <div className="rounded-2xl overflow-hidden my-8">
-                  {/* PLACEHOLDER: Replace with usability testing photos or iteration comparison */}
-                  <div className="w-full h-100 bg-neutral-100 flex items-center justify-center border-2 border-dashed border-neutral-300">
-                    <p className="text-neutral-400 text-lg">Image: Usability testing sessions & design iterations</p>
+                <div className="aspect-[9/16] overflow-hidden rounded-xl bg-neutral-900">
+                  {/* PLACEHOLDER */}
+                  <div className="flex h-full w-full items-center justify-center">
+                    <p className="text-sm text-neutral-700">Adaptive screen</p>
                   </div>
-                </div>
-
-                <div className="space-y-8">
-                  <div className="bg-neutral-50 rounded-2xl p-8">
-                    <h3 className="text-xl text-neutral-900 mb-4">Round 1: Testing Core Concepts</h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                      Early wireframe testing with 20 participants revealed our initial design was too complicated.
-                      Separate tabs for different journey stages confused users. <strong>Solution:</strong> A dynamic
-                      home screen that adapts to context—showing route planning when idle, navigation when traveling,
-                      and trip summaries when complete.
-                    </p>
-                  </div>
-
-                  <div className="bg-neutral-50 rounded-2xl p-8">
-                    <h3 className="text-xl text-neutral-900 mb-4">Round 2: Real-World Usability</h3>
-                    <p className="text-neutral-600 leading-relaxed">
-                      Working prototypes given to 15 participants for a week of real commuting revealed critical
-                      issues lab testing missed. The map interface was nearly unusable in bright sunlight—we increased
-                      contrast and added high-visibility mode. Battery drain from constant GPS was problematic—we
-                      optimized to use GPS only when actively navigating.
-                    </p>
-                    <p className="text-neutral-600 leading-relaxed mt-4">
-                      Most importantly, many users didn&rsquo;t trust real-time tracking initially—waiting early &ldquo;just in case.&rdquo;
-                      We added confidence indicators showing data quality. After seeing accurate predictions consistently,
-                      trust grew.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Final Quote */}
-                <div className="bg-linear-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 border-l-4 border-blue-500 mt-8">
-                    <p className="text-neutral-700 text-lg italic leading-relaxed mb-4">
-                      &ldquo;Before Ruta SV, I would only work in areas I knew well. Now I can accept jobs anywhere in
-                    San Salvador. This app literally earned me more money.&rdquo;
-                    </p>
-                  <p className="text-neutral-500 text-sm">— Claudia, domestic worker</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Final Solution - Hero showcase */}
+      <section className="bg-gradient-to-b from-neutral-950 to-blue-950 py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 text-center">
+            <p className="mb-4 text-sm tracking-wider text-blue-400 uppercase">
+              The Solution
+            </p>
+            <h2 className="text-3xl font-light text-white md:text-4xl lg:text-5xl">
+              Ruta SV
+            </h2>
+          </div>
+
+          {/* Main showcase */}
+          <div className="mb-16 overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-500 p-8 md:p-16">
+            <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-black/20">
+              {/* PLACEHOLDER */}
+              <div className="flex h-full w-full items-center justify-center">
+                <p className="text-xl text-white/40">Hero app showcase</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature screens */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                screen: "Route Search",
+                desc: "Find any route with destination or landmark search",
+              },
+              {
+                screen: "Live Tracking",
+                desc: "See exactly where your bus is—with confidence scores",
+              },
+              {
+                screen: "Navigation",
+                desc: "Step-by-step guidance with stop alerts",
+              },
+              {
+                screen: "Cost View",
+                desc: "Total fare upfront with segment breakdown",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={feature.screen}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="aspect-[9/16] overflow-hidden rounded-2xl bg-neutral-900">
+                  {/* PLACEHOLDER */}
+                  <div className="flex h-full w-full items-center justify-center">
+                    <p className="text-sm text-neutral-700">{feature.screen}</p>
+                  </div>
+                </div>
+                <p className="mt-4 font-medium text-white">{feature.screen}</p>
+                <p className="mt-1 text-sm text-neutral-400">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Design details */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16">
+            <p className="mb-4 text-sm tracking-wider text-neutral-400 uppercase">
+              Craft
+            </p>
+            <h2 className="text-3xl font-light text-neutral-900 md:text-4xl">
+              Details that made the difference
+            </h2>
+          </div>
+
+          <div className="grid gap-12 md:grid-cols-3">
+            <div>
+              <div className="mb-6 aspect-square overflow-hidden rounded-2xl bg-neutral-100">
+                {/* PLACEHOLDER - Color system */}
+                <div className="flex h-full w-full items-center justify-center">
+                  <p className="text-neutral-400">Color system</p>
+                </div>
+              </div>
+              <h3 className="text-lg font-medium text-neutral-900">
+                Colors from culture
+              </h3>
+              <p className="mt-2 text-neutral-600">
+                Route colors match the actual painted buses. Users make instant
+                visual connections between app and reality.
+              </p>
+            </div>
+
+            <div>
+              <div className="mb-6 aspect-square overflow-hidden rounded-2xl bg-neutral-100">
+                {/* PLACEHOLDER - Typography */}
+                <div className="flex h-full w-full items-center justify-center">
+                  <p className="text-neutral-400">Typography scale</p>
+                </div>
+              </div>
+              <h3 className="text-lg font-medium text-neutral-900">
+                Outdoor readability
+              </h3>
+              <p className="mt-2 text-neutral-600">
+                16pt minimum. High contrast mode. 48px touch targets. Designed
+                for bright sunlight and moving buses.
+              </p>
+            </div>
+
+            <div>
+              <div className="mb-6 aspect-square overflow-hidden rounded-2xl bg-neutral-100">
+                {/* PLACEHOLDER - Language */}
+                <div className="flex h-full w-full items-center justify-center">
+                  <p className="text-neutral-400">Language samples</p>
+                </div>
+              </div>
+              <h3 className="text-lg font-medium text-neutral-900">
+                Written by locals
+              </h3>
+              <p className="mt-2 text-neutral-600">
+                Native speakers wrote all copy using Salvadoran idioms.
+                &ldquo;El Centro&rdquo; not &ldquo;Centro Histórico.&rdquo;
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Impact */}
+      <section className="bg-neutral-950 py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16">
+            <p className="mb-4 text-sm tracking-wider text-neutral-500 uppercase">
+              Impact
+            </p>
+            <h2 className="max-w-2xl text-3xl font-light text-white md:text-4xl">
+              Six months after launch
+            </h2>
+          </div>
+
+          <div className="mb-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              { value: "45K+", label: "Active users" },
+              { value: "250K", label: "Monthly route searches" },
+              { value: "4.6★", label: "App store rating" },
+              { value: "85%", label: "30-day retention" },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="rounded-xl bg-neutral-900 p-6"
+              >
+                <p className="text-3xl font-light text-white md:text-4xl">
+                  {stat.value}
+                </p>
+                <p className="mt-2 text-sm text-neutral-500">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="max-w-3xl">
+            <p className="text-lg text-neutral-300">
+              The Ministry of Transport has expressed interest in making Ruta SV
+              the official platform for El Salvador. Several bus operators have
+              installed GPS tracking specifically to participate.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Final quote - Emotional close */}
+      <section className="bg-blue-600 py-24 md:py-32">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <blockquote>
+            <p className="text-2xl font-light text-white md:text-4xl lg:text-5xl">
+              &ldquo;Before Ruta SV, I would only work in areas I knew well. Now
+              I can accept jobs anywhere in San Salvador. This app literally
+              earned me more money.&rdquo;
+            </p>
+            <cite className="mt-8 block text-blue-200">
+              Claudia — Domestic Worker
+            </cite>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* Reflection */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-4xl px-6">
+          <p className="mb-4 text-sm tracking-wider text-neutral-400 uppercase">
+            Reflection
+          </p>
+          <h2 className="text-3xl font-light text-neutral-900 md:text-4xl">
+            What this project taught me
+          </h2>
+
+          <div className="mt-12 space-y-8">
+            <div className="border-l-2 border-blue-500 pl-6">
+              <h3 className="font-medium text-neutral-900">
+                Constraints clarify
+              </h3>
+              <p className="mt-2 text-neutral-600">
+                Designing for limited data, varying literacy, and offline use
+                forced cleaner architecture and simpler interactions. These
+                &ldquo;limitations&rdquo; produced a better product for
+                everyone.
+              </p>
+            </div>
+
+            <div className="border-l-2 border-neutral-200 pl-6">
+              <h3 className="font-medium text-neutral-900">
+                Field research is non-negotiable
+              </h3>
+              <p className="mt-2 text-neutral-600">
+                The insights that shaped this product couldn&rsquo;t have come
+                from surveys or remote interviews. Context matters. Feeling the
+                problem matters.
+              </p>
+            </div>
+
+            <div className="border-l-2 border-neutral-200 pl-6">
+              <h3 className="font-medium text-neutral-900">
+                What I&rsquo;d do differently
+              </h3>
+              <p className="mt-2 text-neutral-600">
+                I&rsquo;d involve bus drivers earlier. We focused on passengers
+                but underestimated how driver adoption affects the entire
+                system. Their buy-in matters more than I initially recognized.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Next project */}
+      <section className="border-t border-neutral-200 bg-white">
+        <Link href="/projects/healthcare" className="block">
+          <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm tracking-wider text-neutral-400 uppercase">
+                  Next Project
+                </p>
+                <p className="mt-2 text-2xl text-neutral-900 md:text-3xl">
+                  Healthcare Consultation System
+                </p>
+              </div>
+              <ArrowRight className="h-8 w-8 text-neutral-400" />
+            </div>
+          </div>
+        </Link>
       </section>
     </div>
   );

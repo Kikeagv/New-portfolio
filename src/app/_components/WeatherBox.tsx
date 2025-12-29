@@ -15,7 +15,7 @@ const iconMap = {
 
 export function WeatherBox() {
   const [time, setTime] = useState(new Date());
-  
+
   // Fetch weather data with tRPC and React Query
   const {
     data: weather,
@@ -45,9 +45,14 @@ export function WeatherBox() {
 
   // Get the appropriate weather icon
   const WeatherIcon = weather ? iconMap[weather.icon] : Sun;
-  const iconColor = weather?.icon === "sun" ? "text-orange-500" : 
-                   weather?.icon === "cloud-rain" ? "text-blue-500" :
-                   weather?.icon === "wind" ? "text-gray-500" : "text-gray-400";
+  const iconColor =
+    weather?.icon === "sun"
+      ? "text-orange-500"
+      : weather?.icon === "cloud-rain"
+        ? "text-blue-500"
+        : weather?.icon === "wind"
+          ? "text-gray-500"
+          : "text-gray-400";
 
   return (
     <motion.div
@@ -71,7 +76,7 @@ export function WeatherBox() {
           <div className="text-sm text-neutral-600">
             {weather?.location ?? "San Salvador"}
           </div>
-          
+
           {isLoading ? (
             <div className="mt-2 flex items-center gap-2">
               <span className="text-lg text-neutral-400">Loading...</span>
@@ -82,7 +87,9 @@ export function WeatherBox() {
             </div>
           ) : weather ? (
             <div className="mt-2 flex items-center gap-2">
-              <span className="text-lg text-neutral-900">{weather.temperature}°C</span>
+              <span className="text-lg text-neutral-900">
+                {weather.temperature}°C
+              </span>
               <span className="text-xs text-neutral-500">
                 {weather.condition}
               </span>
